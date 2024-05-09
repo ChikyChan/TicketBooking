@@ -8,7 +8,6 @@
     "paths": {
         "/authentication/token": {
             "post": {
-                "summary": "Use username and password to authenticate the user and get the access token for further operations.",
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -77,6 +76,256 @@
                     }
                 }
             }
+        },
+        "/events": {
+            "get": {
+                "description": "To get a list of events",
+                "parameters": [
+                    {
+                        "name": "isAvailable",
+                        "description": "Indicate if to filter the events by isAvailable. Do not pass it if don't want to filter by this flag",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Succeed to get the list of events. Empty array if has no events",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Event"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/events/{id}": {
+            "get": {
+                "description": "To get an event detail of an event specified by an event identity",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Succeed to get an event by specified event id.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Event"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "The event specified by the event id is not exists.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/events/{id}/timeslots": {
+            "get": {
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "The id of the event",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Succeed to get the time slots of the specified event. Will be an empty array if no timeslots for this event.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/EventTimeSlot"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "The event specified by the event id is not exists.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/events/{id}/timeslots/{timeSlotId}": {
+            "get": {
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "The id of the event",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "timeSlotId",
+                        "in": "path",
+                        "description": "The id of the event time slot",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Succeed to get the time slot specified by the timeSlot Id of the event specified by the id",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/EventTimeSlot"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "The event specified by the event id or the time slot of the specified event specified the time slot id is not exists.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/events/{id}/timeslots/{timeSlotId}/tickets": {
+            "get": {
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "The id of the event",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "timeSlotId",
+                        "in": "path",
+                        "description": "The id of the event time slot",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Succeed to get the tickets of the event time slot specified by the timeSlot Id of the event specified by the id",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Ticket"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "The event specified by the event id or the time slot of the specified event specified the time slot id is not exists.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     },
     "components": {
@@ -121,48 +370,171 @@
                 "type": "object",
                 "properties": {
                     "EventID": {
-                        "type": "integer"
+                        "type": "integer",
+                        "description": "The identity of the event, it should be unique."
                     },
                     "EventName": {
-                        "type": "string"
-                    },
-                    "EventDates": {
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/EventDate"
-                        }
+                        "type": "string",
+                        "description": "The name of the event"
                     },
                     "Venue": {
-                        "type": "string"
-                    }
-                }
-            },
-            "EventDate": {
-                "type": "object",
-                "properties": {
-                    "Date": {
                         "type": "string",
-                        "format": "date"
+                        "description": "The location of the event"
                     },
-                    "Periods": {
+                    "EventDate": {
+                        "type": "string",
+                        "format": "date",
+                        "description": "The date of the event"
+                    },
+                    "IsAvailable": {
+                        "type": "boolean",
+                        "description": "Indicate if the event time is available for booking. Be true only has at least one event time slot is available"
+                    },
+                    "EventTimeSlots": {
                         "type": "array",
+                        "description": "The time-slots of the event on that date",
                         "items": {
-                            "type": "object",
-                            "properties": {
-                                "StartTime": {
-                                    "type": "string",
-                                    "format": "time"
-                                },
-                                "EndTime": {
-                                    "type": "string",
-                                    "format": "time"
-                                }
-                            }
+                            "$ref": "#/components/schemas/EventTimeSlot"
                         }
                     }
                 }
             },
-            
+            "EventTimeSlot": {
+                "type": "object",
+                "properties": {
+                    "EventTimtSlotId": {
+                        "type": "integer",
+                        "description": "The time slot identity of the event"
+                    },
+                    "EventId": {
+                        "type": "integer",
+                        "description": "The identity of the event of this event time slot, can related to the event"
+                    },
+                    "StartAt": {
+                        "type": "string",
+                        "format": "time",
+                        "description": "The start time of the event on that date"
+                    },
+                    "EndOn": {
+                        "type": "string",
+                        "format": "time",
+                        "description": "The end time of the event on that date"
+                    },
+                    "IsAvailable": {
+                        "type": "boolean",
+                        "description": "Indicate if the event time slot is available for booking. Be true only has at least one ticket has more than 0 available ticket"
+                    },
+                    "Tickets": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Ticket"
+                        }
+                    }
+                }
+            },
+            "Ticket": {
+                "type": "object",
+                "properties": {
+                    "Price": {
+                        "type": "number",
+                        "description": "The price for book a ticket for this event"
+                    },
+                    "Type": {
+                        "type": "string",
+                        "description": "The type of this ticket, can use to describe such as the seat level"
+                    },
+                    "AvailableTicketCount": {
+                        "type": "integer",
+                        "description": "The remain ticket stock of this event time slot"
+                    }
+                }
+            },
+            "Booking": {
+                "type": "object",
+                "properties": {
+                    "BookingId": {
+                        "type": "integer",
+                        "description": "The identity of a booking"
+                    },
+                    "UserName": {
+                        "type": "string",
+                        "description": "The name of the user who book the event"
+                    },
+                    "EventTimeSlotId": {
+                        "type": "integer",
+                        "description": "The event time slot of this booking, related to a Event Time Slot"
+                    },
+                    "EventName": {
+                        "type": "string",
+                        "description": "The name of the event"
+                    },
+                    "EventDate": {
+                        "type": "string",
+                        "format": "date",
+                        "description": "The date of the event "
+                    },
+                    "EventStartAt": {
+                        "type": "string",
+                        "format": "time",
+                        "description": "The start time of the event on that date"
+                    },
+                    "EventEndOn": {
+                        "type": "string",
+                        "format": "time",
+                        "description": "The end time of the event on that date"
+                    },
+                    "Quantity": {
+                        "type": "integer",
+                        "description": "The count of this user booked ticket"
+                    },
+                    "Amount": {
+                        "type": "number",
+                        "description": "The total amount of this booking"
+                    },
+                    "Status": {
+                        "type": "string",
+                        "description": "The status of this booking.",
+                        "enum": [
+                            "New",
+                            "Pending Payment",
+                            "Pending Confirmation",
+                            "Confirmed",
+                            "Cancelled"
+                        ]
+                    }
+                }
+            },
+            "PaymentOrder": {
+                "type": "string",
+                "properties": {
+                    "PaymentOrderId": {
+                        "type": "integer",
+                        "description": "The payment order of bookings"
+                    },
+                    "BookingItems": {
+                        "type": "array",
+                        "description": "An array to mark which booking included in this payment order. Should be the booking Id for each array items",
+                        "items": {
+                            "type": "integer"
+                        }
+                    },
+                    "Status": {
+                        "type": "string",
+                        "description": "The status of this payment order",
+                        "enum": [
+                            "New",
+                            "Pending Payment",
+                            "Paid",
+                            "Refunded",
+                            "Cancelled"
+                        ]
+                    },
+                    "TotalAmount": {
+                        "type": "number",
+                        "description": "The total amount the user should pay for the bookings"
+                    }
+                }
+            },
             "Error": {
                 "type": "object",
                 "required": [
