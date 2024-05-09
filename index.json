@@ -1,0 +1,187 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "version": "1.0.0",
+        "title": "Ticket Booking API",
+        "description": "View and book ticket for event"
+    },
+    "paths": {
+        "/authentication/token": {
+            "post": {
+                "summary": "Use username and password to authenticate the user and get the access token for further operations.",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AuthenticationRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Autnentication succeed and respond the authenticated tokens and expiration information",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AuthenticatedToken"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/authentication/refresh": {
+            "description": "Use the refresh token of the authenticated user to get a new access token for further operations.",
+            "post": {
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/RefreshTokenRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Token refresh succeed",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AuthenticatedToken"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Unexpected errpr",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "AuthenticationRequest": {
+                "type": "object",
+                "properties": {
+                    "UserName": {
+                        "type": "string"
+                    },
+                    "Password": {
+                        "type": "string",
+                        "description": "The SHA512 hashed password of the authenticating user"
+                    }
+                }
+            },
+            "RefreshTokenRequest": {
+                "type": "object",
+                "properties": {
+                    "RefreshToken": {
+                        "type": "string"
+                    }
+                }
+            },
+            "AuthenticatedToken": {
+                "description": "The object to contains access token and refresh token of the authenticated user",
+                "type": "object",
+                "properties": {
+                    "AccessToken": {
+                        "type": "string"
+                    },
+                    "RefreshToken": {
+                        "type": "string"
+                    },
+                    "ExpiryAt": {
+                        "type": "string",
+                        "format": "date"
+                    }
+                }
+            },
+            "Event": {
+                "type": "object",
+                "properties": {
+                    "EventID": {
+                        "type": "integer"
+                    },
+                    "EventName": {
+                        "type": "string"
+                    },
+                    "EventDates": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/EventDate"
+                        }
+                    },
+                    "Venue": {
+                        "type": "string"
+                    }
+                }
+            },
+            "EventDate": {
+                "type": "object",
+                "properties": {
+                    "Date": {
+                        "type": "string",
+                        "format": "date"
+                    },
+                    "Periods": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "StartTime": {
+                                    "type": "string",
+                                    "format": "time"
+                                },
+                                "EndTime": {
+                                    "type": "string",
+                                    "format": "time"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            
+            "Error": {
+                "type": "object",
+                "required": [
+                    "message"
+                ],
+                "properties": {
+                    "message": {
+                        "description": "A human readable error message",
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "securitySchemes": {
+            "TicketBookingAuth": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
+            }
+        }
+    }
+}
