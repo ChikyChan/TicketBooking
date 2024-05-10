@@ -142,6 +142,16 @@
                             }
                         }
                     },
+                    "400": {
+                        "description": "The format of the id parameter is not valid",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
                     "404": {
                         "description": "The event specified by the event id is not exists.",
                         "content": {
@@ -188,6 +198,16 @@
                                     "items": {
                                         "$ref": "#/components/schemas/EventTimeSlot"
                                     }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "The format of the id parameter is not valid",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
                                 }
                             }
                         }
@@ -248,6 +268,16 @@
                             }
                         }
                     },
+                    "400": {
+                        "description": "The format of the id parameter or timeSlotId parameter is not valid",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
                     "404": {
                         "description": "The event specified by the event id or the time slot of the specified event specified the time slot id is not exists.",
                         "content": {
@@ -304,6 +334,16 @@
                             }
                         }
                     },
+                    "400": {
+                        "description": "The format of the id parameter or tileSlotId is not valid",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
                     "404": {
                         "description": "The event specified by the event id or the time slot of the specified event specified the time slot id is not exists.",
                         "content": {
@@ -325,6 +365,387 @@
                         }
                     }
                 }
+            }
+        },
+        "/me/bookings": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "Succeed to get the authenticated user's booking list. Empty list may be respond if user has no bookings",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Booking"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "The request is not authenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "TicketBookingAuth": [
+                            "Customer"
+                        ]
+                    }
+                ]
+            },
+            "put": {
+                "description": "User buy ticket and create a booking",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Booking"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "The booking created succeed",
+                        "headers": {
+                            "ETag": {
+                                "description": "The tag of the booking. This is to indicate the version of a booking",
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Booking"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Some input is in a bad format or not in the expected range.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "The request is not authenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "The status should only be New while creating a booking",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "TicketBookingAuth": [
+                            "Customer"
+                        ]
+                    }
+                ]
+            }
+        },
+        "/me/bookings/{id}": {
+            "get": {
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "schema": {
+                            "type": "integer",
+                            "description": "The identity of the booking"
+                        },
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Succeed to get the authenticated user's booking specified by the booking identity",
+                        "headers": {
+                            "ETag": {
+                                "description": "The tag of the booking. This is to indicate the version of a booking",
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Booking"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "The request is not authenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "The booking specified by the id is not found for this user.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "TicketBookingAuth": [
+                            "Customer"
+                        ]
+                    }
+                ]
+            },
+            "patch": {
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "schema": {
+                            "type": "integer",
+                            "description": "The identity of the booking"
+                        },
+                        "required": true
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Booking"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Succeed to update the specified booking",
+                        "headers": {
+                            "ETag": {
+                                "description": "The tag of the booking. This is to indicate the version of a booking",
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Booking"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Some input is in a bad format or not in the expected range.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "The request is not authenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "The booking specified by the id is not found for this user.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "The current booking status is not supported to change to the status specified by the request"
+                    },
+                    "412": {
+                        "description": "If header 'If-Match' is specified and the value is not match with the ETag value, then will respond `412 Precondition Failed`",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "TicketBookingAuth": [
+                            "Customer"
+                        ]
+                    }
+                ]
+            }
+        },
+        "/me/bookings/{id}/pay": {
+            "get": {
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "schema": {
+                            "type": "integer",
+                            "description": "The identity of the booking"
+                        },
+                        "required": true
+                    },
+                    {
+                        "name": "payPlatform",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "Alipay",
+                                "WeChat",
+                                "UnionPay",
+                                "PayPal"
+                            ]
+                        }
+                    }
+                ],
+                "responses": {
+                    "302": {
+                        "description": "Redirect to the payment URL of the specified platform",
+                        "headers": {
+                            "Location": {
+                                "description": "The location wiil redirect to",
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "The request is not authenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "The booking specified by the id is not found for this user.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "TicketBookingAuth": [
+                            "Customer"
+                        ]
+                    }
+                ]
             }
         }
     },
@@ -454,24 +875,34 @@
                 "properties": {
                     "BookingId": {
                         "type": "integer",
-                        "description": "The identity of a booking"
+                        "description": "The identity of this booking",
+                        "readOnly": true
+                    },
+                    "BookingNo": {
+                        "type": "string",
+                        "description": "The number of this booking. This should also be unique",
+                        "readOnly": true
                     },
                     "UserName": {
                         "type": "string",
-                        "description": "The name of the user who book the event"
+                        "description": "The name of the user who book the event",
+                        "readOnly": true
                     },
                     "EventTimeSlotId": {
                         "type": "integer",
-                        "description": "The event time slot of this booking, related to a Event Time Slot"
+                        "description": "The event time slot of this booking, related to a Event Time Slot",
+                        "readOnly": true
                     },
                     "EventName": {
                         "type": "string",
-                        "description": "The name of the event"
+                        "description": "The name of the event",
+                        "readOnly": true
                     },
                     "EventDate": {
                         "type": "string",
                         "format": "date",
-                        "description": "The date of the event "
+                        "description": "The date of the event",
+                        "readOnly": true
                     },
                     "EventStartAt": {
                         "type": "string",
@@ -489,7 +920,8 @@
                     },
                     "Amount": {
                         "type": "number",
-                        "description": "The total amount of this booking"
+                        "description": "The total amount of this booking",
+                        "readOnly": true
                     },
                     "Status": {
                         "type": "string",
@@ -499,6 +931,9 @@
                             "Pending Payment",
                             "Pending Confirmation",
                             "Confirmed",
+                            "Completed",
+                            "Request Cancel",
+                            "Pending Cancel Confirmation",
                             "Cancelled"
                         ]
                     }
@@ -509,14 +944,16 @@
                 "properties": {
                     "PaymentOrderId": {
                         "type": "integer",
-                        "description": "The payment order of bookings"
+                        "description": "The payment order of bookings",
+                        "readOnly": true
                     },
                     "BookingItems": {
                         "type": "array",
                         "description": "An array to mark which booking included in this payment order. Should be the booking Id for each array items",
                         "items": {
                             "type": "integer"
-                        }
+                        },
+                        "readOnly": true
                     },
                     "Status": {
                         "type": "string",
@@ -531,7 +968,8 @@
                     },
                     "TotalAmount": {
                         "type": "number",
-                        "description": "The total amount the user should pay for the bookings"
+                        "description": "The total amount the user should pay for the bookings",
+                        "readOnly": true
                     }
                 }
             },
