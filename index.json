@@ -13,6 +13,10 @@
                         "application/json": {
                             "schema": {
                                 "$ref": "#/components/schemas/AuthenticationRequest"
+                            },
+                            "example": {
+                                "userName": "ChikyChan",
+                                "password": "b94bf37da59d2fcf595c4179a37e82b5a7b4dbb5a58624f5d4fdb502f6dc890b6d42086f2173f717d51c4af796d76113440147116eb7319bc8fd30460ce26bf0"
                             }
                         }
                     }
@@ -24,6 +28,11 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/AuthenticatedToken"
+                                },
+                                "example": {
+                                    "AccessToken": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkNoaWt5Q2hhbiIsImlhdCI6MTcxNTM1NTg5Nywicm9sZXMiOlsiQ3VzdG9tZXIiXX0.v1IzSjAMKI3kMklbLqvcT-6HSheg_59DlV0AzltPxSbn1WQEOPPl3_9K7peqSkKuyszvhaYt2yd8eNqZeWp8zg",
+                                    "RefreshToken": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJDaGlreUNoYW4iLCJuYW1lIjoiQ2hpa3lDaGFuIiwiaWF0IjoxNzE1MzU1ODk3LCJyb2xlcyI6WyJDdXN0b21lciJdLCJleHAiOjE3MTU0NDU4OTh9.LvArTm0YfLN3yUpm5ox23UXXKuWnq4f08JY4ts8S_Zy7MafE94TXJk71DsSLMswyNN_yrfTAV7yQEY_mBPwC9g",
+                                    "ExpiryAt": "2024-05-10T17:55:58Z"
                                 }
                             }
                         }
@@ -34,6 +43,9 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/Error"
+                                },
+                                "example": {
+                                    "Message": "Unexpected error occurred, please contact IT service desk for support."
                                 }
                             }
                         }
@@ -49,6 +61,9 @@
                         "application/json": {
                             "schema": {
                                 "$ref": "#/components/schemas/RefreshTokenRequest"
+                            },
+                            "example": {
+                                "RefreshToken": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJDaGlreUNoYW4iLCJuYW1lIjoiQ2hpa3lDaGFuIiwiaWF0IjoxNzE1MzU1ODk3LCJyb2xlcyI6WyJDdXN0b21lciJdLCJleHAiOjE3MTU0NDU4OTh9.LvArTm0YfLN3yUpm5ox23UXXKuWnq4f08JY4ts8S_Zy7MafE94TXJk71DsSLMswyNN_yrfTAV7yQEY_mBPwC9g"
                             }
                         }
                     }
@@ -60,16 +75,24 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/AuthenticatedToken"
+                                },
+                                "example": {
+                                    "AccessToken": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkNoaWt5Q2hhbiIsImlhdCI6MTcxNTM1NTg5Nywicm9sZXMiOlsiQ3VzdG9tZXIiXX0.v1IzSjAMKI3kMklbLqvcT-6HSheg_59DlV0AzltPxSbn1WQEOPPl3_9K7peqSkKuyszvhaYt2yd8eNqZeWp8zg",
+                                    "RefreshToken": null,
+                                    "ExpiryAt": "2024-05-10T17:55:58Z"
                                 }
                             }
                         }
                     },
                     "500": {
-                        "description": "Unexpected errpr",
+                        "description": "Unexpected error",
                         "content": {
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/Error"
+                                },
+                                "example": {
+                                    "Message": "Unexpected error occurred, please contact IT service desk for support."
                                 }
                             }
                         }
@@ -88,6 +111,16 @@
                         "required": false,
                         "schema": {
                             "type": "boolean"
+                        },
+                        "examples": {
+                            "GetAvailableEvents": {
+                                "description": "Get available events",
+                                "value": "true"
+                            },
+                            "GetUnAvailableEvents": {
+                                "description": "Get unavailable events",
+                                "value": "false"
+                            }
                         }
                     }
                 ],
@@ -101,7 +134,30 @@
                                     "items": {
                                         "$ref": "#/components/schemas/Event"
                                     }
-                                }
+                                },
+                                "example": [
+                                    {
+                                        "EventID": 1,
+                                        "EventName": "Artist Sun Yao takes us on a trip across the universe",
+                                        "Introduction": "The Aurora Museum recently unveiled solo exhibition \"On the Waves of\" by artist Sun Yao. Showcasing more than 50 pivotal works, the exhibition spans a diverse array of themes from his latest \"Inner Universe\" series to the compelling \"Eternal Flame\" and \"Neverland\" collections, offering a profound insight into Sun’s artistic journey over the past 20 years.",
+                                        "Venue": "The Aurora Museum 99 Fucheng Road, Pudong New Area 富城路99号",
+                                        "IsAvailable": true
+                                    },
+                                    {
+                                        "EventID": 2,
+                                        "EventName": "French artist fuses reality with fantasy at the Lisson Gallery",
+                                        "Introduction": "French artist Laure Prouvost is presenting her inaugural exhibition at the Lisson Gallery in Shanghai, titled \"Pulled Towards You.\"",
+                                        "Venue": "Lisson Gallery 2/F, 27 Huqiu Road",
+                                        "IsAvailable": true
+                                    },
+                                    {
+                                        "EventID": 3,
+                                        "EventName": "Crew with Straw Hat Pirates at One Piece pop-up store",
+                                        "Introduction": "Ahoy there, mateys! Drop anchor at the One Piece pop-up store in Shanghai through May for a swashbuckling adventure with the Straw Hat Pirates.",
+                                        "Venue": "Jing'an Joy City 198 Xizang Rd N.",
+                                        "IsAvailable": true
+                                    }
+                                ]
                             }
                         }
                     },
@@ -111,6 +167,9 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/Error"
+                                },
+                                "example": {
+                                    "Message": "Unexpected error occurred, please contact IT service desk for support."
                                 }
                             }
                         }
@@ -128,7 +187,8 @@
                         "schema": {
                             "type": "integer"
                         },
-                        "required": true
+                        "required": true,
+                        "example": "1"
                     }
                 ],
                 "responses": {
@@ -138,6 +198,13 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/Event"
+                                },
+                                "example": {
+                                    "EventID": 1,
+                                    "EventName": "Artist Sun Yao takes us on a trip across the universe",
+                                    "Introduction": "The Aurora Museum recently unveiled solo exhibition \"On the Waves of\" by artist Sun Yao. Showcasing more than 50 pivotal works, the exhibition spans a diverse array of themes from his latest \"Inner Universe\" series to the compelling \"Eternal Flame\" and \"Neverland\" collections, offering a profound insight into Sun’s artistic journey over the past 20 years.",
+                                    "Venue": "The Aurora Museum 99 Fucheng Road, Pudong New Area 富城路99号",
+                                    "IsAvailable": true
                                 }
                             }
                         }
@@ -148,6 +215,9 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/Error"
+                                },
+                                "example": {
+                                    "Message": "\"a123\" is not a valid number"
                                 }
                             }
                         }
@@ -158,6 +228,9 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/Error"
+                                },
+                                "example": {
+                                    "Message": "The event with ID = 1 was not found"
                                 }
                             }
                         }
@@ -168,6 +241,9 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/Error"
+                                },
+                                "example": {
+                                    "Message": "Unexpected error occurred, please contact IT service desk for support."
                                 }
                             }
                         }
@@ -185,7 +261,8 @@
                         "required": true,
                         "schema": {
                             "type": "integer"
-                        }
+                        },
+                        "example": "1"
                     }
                 ],
                 "responses": {
@@ -198,7 +275,33 @@
                                     "items": {
                                         "$ref": "#/components/schemas/EventTimeSlot"
                                     }
-                                }
+                                },
+                                "example": [
+                                    {
+                                        "EventTimeSlotId": 1,
+                                        "EventId": 1,
+                                        "EventDate": "2024-04-27",
+                                        "StartAt": "11:00",
+                                        "EndOn": "18:00",
+                                        "IsAvailable": true
+                                    },
+                                    {
+                                        "EventTimeSlotId": 2,
+                                        "EventId": 1,
+                                        "EventDate": "2024-04-28",
+                                        "StartAt": "11:00",
+                                        "EndOn": "18:00",
+                                        "IsAvailable": true
+                                    },
+                                    {
+                                        "EventTimeSlotId": 3,
+                                        "EventId": 1,
+                                        "EventDate": "2024-04-29",
+                                        "StartAt": "11:00",
+                                        "EndOn": "18:00",
+                                        "IsAvailable": true
+                                    }
+                                ]
                             }
                         }
                     },
@@ -208,6 +311,9 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/Error"
+                                },
+                                "example": {
+                                    "Message": "\"a123\" is not a valid number"
                                 }
                             }
                         }
@@ -218,6 +324,9 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/Error"
+                                },
+                                "example": {
+                                    "Message": "The event with ID = 1 was not found"
                                 }
                             }
                         }
@@ -228,6 +337,9 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/Error"
+                                },
+                                "example": {
+                                    "Message": "Unexpected error occurred, please contact IT service desk for support."
                                 }
                             }
                         }
@@ -245,7 +357,8 @@
                         "required": true,
                         "schema": {
                             "type": "integer"
-                        }
+                        },
+                        "example": "1"
                     },
                     {
                         "name": "timeSlotId",
@@ -254,7 +367,8 @@
                         "required": true,
                         "schema": {
                             "type": "integer"
-                        }
+                        },
+                        "example": "1"
                     }
                 ],
                 "responses": {
@@ -264,6 +378,14 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/EventTimeSlot"
+                                },
+                                "example": {
+                                    "EventTimeSlotId": 1,
+                                    "EventId": 1,
+                                    "EventDate": "2024-04-27",
+                                    "StartAt": "11:00",
+                                    "EndOn": "18:00",
+                                    "IsAvailable": true
                                 }
                             }
                         }
@@ -274,6 +396,9 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/Error"
+                                },
+                                "example": {
+                                    "Message": "\"a123\" is not a valid number"
                                 }
                             }
                         }
@@ -284,6 +409,9 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/Error"
+                                },
+                                "example": {
+                                    "Message": "The event with ID = 1 was not found"
                                 }
                             }
                         }
@@ -294,6 +422,9 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/Error"
+                                },
+                                "example": {
+                                    "Message": "Unexpected error occurred, please contact IT service desk for support."
                                 }
                             }
                         }
@@ -311,7 +442,8 @@
                         "required": true,
                         "schema": {
                             "type": "integer"
-                        }
+                        },
+                        "example": "1"
                     },
                     {
                         "name": "timeSlotId",
@@ -320,7 +452,8 @@
                         "required": true,
                         "schema": {
                             "type": "integer"
-                        }
+                        },
+                        "example": "1"
                     }
                 ],
                 "responses": {
@@ -330,7 +463,14 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/Ticket"
-                                }
+                                },
+                                "example": [
+                                    {
+                                        "Price": 10.00,
+                                        "Type": "Public",
+                                        "AvailableTicketCount": 4000
+                                    }
+                                ]
                             }
                         }
                     },
@@ -340,6 +480,9 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/Error"
+                                },
+                                "example": {
+                                    "Message": "\"a123\" is not a valid number"
                                 }
                             }
                         }
@@ -350,6 +493,9 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/Error"
+                                },
+                                "example": {
+                                    "Message": "The event with ID = 1 was not found"
                                 }
                             }
                         }
@@ -360,6 +506,9 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/Error"
+                                },
+                                "example": {
+                                    "Message": "Unexpected error occurred, please contact IT service desk for support."
                                 }
                             }
                         }
@@ -379,7 +528,37 @@
                                     "items": {
                                         "$ref": "#/components/schemas/Booking"
                                     }
-                                }
+                                },
+                                "example": [
+                                    {
+                                        "BookingId": 1,
+                                        "BookingNo": "B20240411163222399",
+                                        "UserName": "ChikyChan",
+                                        "EventTimeSlotId": 4,
+                                        "EventName": "French artist fuses reality with fantasy at the Lisson Gallery",
+                                        "EventDate": "2024-04-27",
+                                        "EventStartAt": "11:00",
+                                        "EventEndOn": "18:00",
+                                        "TicketType": "VIP1",
+                                        "Quantity": 2,
+                                        "Amount": 1360.00,
+                                        "Status": "Pending Payment"
+                                    },
+                                    {
+                                        "BookingId": 2,
+                                        "BookingNo": "B20240412124519657",
+                                        "UserName": "ChikyChan",
+                                        "EventTimeSlotId": 2,
+                                        "EventName": "Artist Sun Yao takes us on a trip across the universe",
+                                        "EventDate": "2024-04-27",
+                                        "EventStartAt": "15:00",
+                                        "EventEndOn": "17:00",
+                                        "TicketType": "Normal",
+                                        "Quantity": 2,
+                                        "Amount": 20.00,
+                                        "Status": "Confirmed"
+                                    }
+                                ]
                             }
                         }
                     },
@@ -389,6 +568,9 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/Error"
+                                },
+                                "example": {
+                                    "Message": "You are not authenticated or your autnentication is expired."
                                 }
                             }
                         }
@@ -399,6 +581,9 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/Error"
+                                },
+                                "example": {
+                                    "Message": "Unexpected error occurred, please contact IT service desk for support."
                                 }
                             }
                         }
@@ -458,6 +643,9 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/Error"
+                                },
+                                "example": {
+                                    "Message": "You are not authenticated or your autnentication is expired."
                                 }
                             }
                         }
@@ -478,6 +666,9 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/Error"
+                                },
+                                "example": {
+                                    "Message": "Unexpected error occurred, please contact IT service desk for support."
                                 }
                             }
                         }
@@ -533,6 +724,9 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/Error"
+                                },
+                                "example": {
+                                    "Message": "You are not authenticated or your autnentication is expired."
                                 }
                             }
                         }
@@ -553,6 +747,9 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/Error"
+                                },
+                                "example": {
+                                    "Message": "Unexpected error occurred, please contact IT service desk for support."
                                 }
                             }
                         }
@@ -623,6 +820,9 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/Error"
+                                },
+                                "example": {
+                                    "Message": "You are not authenticated or your autnentication is expired."
                                 }
                             }
                         }
@@ -656,6 +856,9 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/Error"
+                                },
+                                "example": {
+                                    "Message": "Unexpected error occurred, please contact IT service desk for support."
                                 }
                             }
                         }
@@ -714,6 +917,9 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/Error"
+                                },
+                                "example": {
+                                    "Message": "You are not authenticated or your autnentication is expired."
                                 }
                             }
                         }
@@ -734,6 +940,9 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/Error"
+                                },
+                                "example": {
+                                    "Message": "Unexpected error occurred, please contact IT service desk for support."
                                 }
                             }
                         }
@@ -774,6 +983,9 @@
             "AuthenticatedToken": {
                 "description": "The object to contains access token and refresh token of the authenticated user",
                 "type": "object",
+                "required": [
+                    "AccessToken"
+                ],
                 "properties": {
                     "AccessToken": {
                         "type": "string"
@@ -783,7 +995,7 @@
                     },
                     "ExpiryAt": {
                         "type": "string",
-                        "format": "date"
+                        "format": "datetime"
                     }
                 }
             },
@@ -798,25 +1010,17 @@
                         "type": "string",
                         "description": "The name of the event"
                     },
+                    "Introduction": {
+                        "type": "string",
+                        "description": ""
+                    },
                     "Venue": {
                         "type": "string",
                         "description": "The location of the event"
                     },
-                    "EventDate": {
-                        "type": "string",
-                        "format": "date",
-                        "description": "The date of the event"
-                    },
                     "IsAvailable": {
                         "type": "boolean",
                         "description": "Indicate if the event time is available for booking. Be true only has at least one event time slot is available"
-                    },
-                    "EventTimeSlots": {
-                        "type": "array",
-                        "description": "The time-slots of the event on that date",
-                        "items": {
-                            "$ref": "#/components/schemas/EventTimeSlot"
-                        }
                     }
                 }
             },
@@ -831,6 +1035,11 @@
                         "type": "integer",
                         "description": "The identity of the event of this event time slot, can related to the event"
                     },
+                    "EventDate": {
+                        "type": "string",
+                        "format": "date",
+                        "description": "The date of the event"
+                    },
                     "StartAt": {
                         "type": "string",
                         "format": "time",
@@ -844,12 +1053,6 @@
                     "IsAvailable": {
                         "type": "boolean",
                         "description": "Indicate if the event time slot is available for booking. Be true only has at least one ticket has more than 0 available ticket"
-                    },
-                    "Tickets": {
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/Ticket"
-                        }
                     }
                 }
             },
@@ -914,6 +1117,10 @@
                         "format": "time",
                         "description": "The end time of the event on that date"
                     },
+                    "TicketType": {
+                        "type": "string",
+                        "description": "The type of the booked ticket"
+                    },
                     "Quantity": {
                         "type": "integer",
                         "description": "The count of this user booked ticket"
@@ -976,10 +1183,10 @@
             "Error": {
                 "type": "object",
                 "required": [
-                    "message"
+                    "Message"
                 ],
                 "properties": {
-                    "message": {
+                    "Message": {
                         "description": "A human readable error message",
                         "type": "string"
                     }
