@@ -467,8 +467,13 @@
                                 "example": [
                                     {
                                         "Price": 10.00,
-                                        "Type": "Public",
-                                        "AvailableTicketCount": 4000
+                                        "Type": "Normal",
+                                        "AvailableTicketCount": 1000
+                                    },
+                                    {
+                                        "Price": 20.00,
+                                        "Type": "VIP1",
+                                        "AvailableTicketCount": 200
                                     }
                                 ]
                             }
@@ -604,6 +609,11 @@
                         "application/json": {
                             "schema": {
                                 "$ref": "#/components/schemas/Booking"
+                            },
+                            "example": {
+                                "EventTimeSlotId": 1,
+                                "TicketType": "Normal",
+                                "Quantity": 2
                             }
                         }
                     }
@@ -633,6 +643,9 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/Error"
+                                },
+                                "example": {
+                                    "Message": "The value \"a123\" assigned to field Quantity is not a valid number"
                                 }
                             }
                         }
@@ -646,16 +659,6 @@
                                 },
                                 "example": {
                                     "Message": "You are not authenticated or your autnentication is expired."
-                                }
-                            }
-                        }
-                    },
-                    "409": {
-                        "description": "The status should only be New while creating a booking",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Error"
                                 }
                             }
                         }
@@ -693,7 +696,8 @@
                             "type": "integer",
                             "description": "The identity of the booking"
                         },
-                        "required": true
+                        "required": true,
+                        "example": "1"
                     }
                 ],
                 "responses": {
@@ -704,7 +708,8 @@
                                 "description": "The tag of the booking. This is to indicate the version of a booking",
                                 "schema": {
                                     "type": "string"
-                                }
+                                },
+                                "required": false
                             }
                         },
                         "content": {
@@ -714,6 +719,20 @@
                                     "items": {
                                         "$ref": "#/components/schemas/Booking"
                                     }
+                                },
+                                "example": {
+                                    "BookingId": 1,
+                                    "BookingNo": "B20240411163222399",
+                                    "UserName": "ChikyChan",
+                                    "EventTimeSlotId": 4,
+                                    "EventName": "French artist fuses reality with fantasy at the Lisson Gallery",
+                                    "EventDate": "2024-04-27",
+                                    "EventStartAt": "11:00",
+                                    "EventEndOn": "18:00",
+                                    "TicketType": "VIP1",
+                                    "Quantity": 2,
+                                    "Amount": 1360.00,
+                                    "Status": "Pending Payment"
                                 }
                             }
                         }
@@ -737,6 +756,9 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/Error"
+                                },
+                                "example": {
+                                    "Message": "The booking specified by the id is not found for this user."
                                 }
                             }
                         }
@@ -764,7 +786,7 @@
                 ]
             },
             "patch": {
-                "description": "",
+                "description": "Update a booking",
                 "parameters": [
                     {
                         "name": "id",
@@ -773,7 +795,8 @@
                             "type": "integer",
                             "description": "The identity of the booking"
                         },
-                        "required": true
+                        "required": true,
+                        "example": "1"
                     }
                 ],
                 "requestBody": {
@@ -781,6 +804,15 @@
                         "application/json": {
                             "schema": {
                                 "$ref": "#/components/schemas/Booking"
+                            },
+                            "examples": {
+                                "CancelBooking": {
+                                    "summary": "Cancel a booking",
+                                    "description": "Cancel a booking",
+                                    "value": {
+                                        "Status": "Request Cancel"
+                                    }
+                                }
                             }
                         }
                     }
@@ -800,6 +832,20 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/Booking"
+                                },
+                                "example": {
+                                    "BookingId": 1,
+                                    "BookingNo": "B20240411163222399",
+                                    "UserName": "ChikyChan",
+                                    "EventTimeSlotId": 4,
+                                    "EventName": "French artist fuses reality with fantasy at the Lisson Gallery",
+                                    "EventDate": "2024-04-27",
+                                    "EventStartAt": "11:00",
+                                    "EventEndOn": "18:00",
+                                    "TicketType": "VIP1",
+                                    "Quantity": 2,
+                                    "Amount": 1360.00,
+                                    "Status": "Request Cancel"
                                 }
                             }
                         }
@@ -833,12 +879,25 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/Error"
+                                },
+                                "example": {
+                                    "Message": "The booking specified by the id is not found for this user."
                                 }
                             }
                         }
                     },
                     "409": {
-                        "description": "The current booking status is not supported to change to the status specified by the request"
+                        "description": "The current booking status is not supported to change to the status specified by the request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                },
+                                "example": {
+                                    "Message": "It is not allowed to request cancel for a completed booking"
+                                }
+                            }
+                        }
                     },
                     "412": {
                         "description": "If header 'If-Match' is specified and the value is not match with the ETag value, then will respond `412 Precondition Failed`",
@@ -846,6 +905,9 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/Error"
+                                },
+                                "example": {
+                                    "Message": "There are some changes of this booking, please refresh the page to get the latest booking information"
                                 }
                             }
                         }
@@ -883,7 +945,8 @@
                             "type": "integer",
                             "description": "The identity of the booking"
                         },
-                        "required": true
+                        "required": true,
+                        "example": "1"
                     },
                     {
                         "name": "payPlatform",
@@ -896,7 +959,8 @@
                                 "UnionPay",
                                 "PayPal"
                             ]
-                        }
+                        },
+                        "example": "Alipay"
                     }
                 ],
                 "responses": {
@@ -930,6 +994,9 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/Error"
+                                },
+                                "example": {
+                                    "Message": "The booking specified by the id is not found for this user."
                                 }
                             }
                         }
@@ -1078,44 +1145,44 @@
                 "properties": {
                     "BookingId": {
                         "type": "integer",
-                        "description": "The identity of this booking",
+                        "description": "The identity of this booking. Auto generated by system.",
                         "readOnly": true
                     },
                     "BookingNo": {
                         "type": "string",
-                        "description": "The number of this booking. This should also be unique",
+                        "description": "The number of this booking. This should also be unique and auto generated by system.",
                         "readOnly": true
                     },
                     "UserName": {
                         "type": "string",
-                        "description": "The name of the user who book the event",
+                        "description": "The name of the user who book the event. Auto determined by system accordint to current login user who book ticket(s).",
                         "readOnly": true
                     },
                     "EventTimeSlotId": {
                         "type": "integer",
-                        "description": "The event time slot of this booking, related to a Event Time Slot",
+                        "description": "The event time slot of this booking, related to a Event Time Slot.",
                         "readOnly": true
                     },
                     "EventName": {
                         "type": "string",
-                        "description": "The name of the event",
+                        "description": "The name of the event. Auto determined by system accordint to Event Time Slot Id",
                         "readOnly": true
                     },
                     "EventDate": {
                         "type": "string",
                         "format": "date",
-                        "description": "The date of the event",
+                        "description": "The date of the event. Auto determined by system accordint to Event Time Slot Id",
                         "readOnly": true
                     },
                     "EventStartAt": {
                         "type": "string",
                         "format": "time",
-                        "description": "The start time of the event on that date"
+                        "description": "The start time of the event on that date. Auto determined by system accordint to Event Time Slot Id"
                     },
                     "EventEndOn": {
                         "type": "string",
                         "format": "time",
-                        "description": "The end time of the event on that date"
+                        "description": "The end time of the event on that date. Auto determined by system accordint to Event Time Slot Id"
                     },
                     "TicketType": {
                         "type": "string",
@@ -1127,12 +1194,12 @@
                     },
                     "Amount": {
                         "type": "number",
-                        "description": "The total amount of this booking",
+                        "description": "The total amount of this booking. Auto determined by system",
                         "readOnly": true
                     },
                     "Status": {
                         "type": "string",
-                        "description": "The status of this booking.",
+                        "description": "The status of this booking. Auto determined by system while booking ticket(s)",
                         "enum": [
                             "New",
                             "Pending Payment",
