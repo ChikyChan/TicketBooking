@@ -1023,6 +1023,26 @@
                     }
                 ]
             }
+        },
+        "/payment/notify": {
+            "get": {
+                "description": "The endpoint for synchorize notify the payment result from external payment platform. The parameters are dynamic according to different payment platform the request come from, and different payment platform payment notify handler should get their parameters from the query string.",
+                "responses": {
+                    "204": {
+                        "description": "Succedd to handle the payment notification"
+                    },
+                    "500": {
+                        "description": "Unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     },
     "components": {
