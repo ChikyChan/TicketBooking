@@ -8,6 +8,9 @@
     "paths": {
         "/authentication/token": {
             "post": {
+                "tags": [
+                    "Authentication"
+                ],
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -56,6 +59,9 @@
         "/authentication/refresh": {
             "description": "Use the refresh token of the authenticated user to get a new access token for further operations.",
             "post": {
+                "tags": [
+                    "Authentication"
+                ],
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -102,6 +108,9 @@
         },
         "/events": {
             "get": {
+                "tags": [
+                    "Events"
+                ],
                 "description": "To get a list of events",
                 "parameters": [
                     {
@@ -179,6 +188,9 @@
         },
         "/events/{id}": {
             "get": {
+                "tags": [
+                    "Events"
+                ],
                 "description": "To get an event detail of an event specified by an event identity",
                 "parameters": [
                     {
@@ -253,6 +265,9 @@
         },
         "/events/{id}/timeslots": {
             "get": {
+                "tags": [
+                    "Events"
+                ],
                 "parameters": [
                     {
                         "name": "id",
@@ -349,6 +364,9 @@
         },
         "/events/{id}/timeslots/{timeSlotId}": {
             "get": {
+                "tags": [
+                    "Events"
+                ],
                 "parameters": [
                     {
                         "name": "id",
@@ -434,6 +452,9 @@
         },
         "/events/{id}/timeslots/{timeSlotId}/tickets": {
             "get": {
+                "tags": [
+                    "Events"
+                ],
                 "parameters": [
                     {
                         "name": "id",
@@ -521,8 +542,155 @@
                 }
             }
         },
-        "/me/bookings": {
+        "/users": {
+            "put": {
+                "tags": [
+                    "User"
+                ],
+                "description": "User registration",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/User"
+                            },
+                            "example": {
+                                "UserName": "ChikyChan",
+                                "Password": "b94bf37da59d2fcf595c4179a37e82b5a7b4dbb5a58624f5d4fdb502f6dc890b6d42086f2173f717d51c4af796d76113440147116eb7319bc8fd30460ce26bf0",
+                                "ConfirmPassword": "b94bf37da59d2fcf595c4179a37e82b5a7b4dbb5a58624f5d4fdb502f6dc890b6d42086f2173f717d51c4af796d76113440147116eb7319bc8fd30460ce26bf0",
+                                "Phone": "+86 12345678901",
+                                "Email": "chikychan@hotmail.com",
+                                "ShippingAddresses": [
+                                    "Address 1, GuangZhou city, GuangDong Province, China",
+                                    "Address 2, GuangZhou city, GuangDong Province, China"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                        "204": {
+                            "description": "Succeed to register a user"
+                        },
+                        "500": {
+                            "description": "Unexpected error",
+                            "content": {
+                                "application/json": {
+                                    "schema": {
+                                        "$ref": "#/components/schemas/Error"
+                                    },
+                                    "example": {
+                                        "Message": "Unexpected error occurred, please contact IT service desk for support."
+                                    }
+                                }
+                            }
+                        }
+                    }
+            }
+        },
+        "/users/me": {
+            "patch": {
+                "tags": [
+                    "User"
+                ],
+                "description": "Update user profile",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/User"
+                            },
+                            "examples": {
+                                "UpdateAddress": {
+                                    "summary": "Update Shipping Address",
+                                    "value": {
+                                        "ShippingAddresses": [
+                                            "Address 1, GuangZhou city, GuangDong Province, China",
+                                            "Address 2, GuangZhou city, GuangDong Province, China"
+                                        ]
+                                    }
+                                },
+                                "UpdatePhoneNumber": {
+                                    "summary": "Update phone number",
+                                    "value": {
+                                        "Phone": "+86 12345678901"
+                                    }
+                                },
+                                "ChangePassword": {
+                                    "summary": "Change user password",
+                                    "value": {
+                                        "OldPassword": "b94bf37da59d2fcf595c4179a37e82b5a7b4dbb5a58624f5d4fdb502f6dc890b6d42086f2173f717d51c4af796d76113440147116eb7319bc8fd30460ce26bf0",
+                                        "Password": "b94bf37da59d2fcf595c4179a37e82b5a7b4dbb5a58624f5d4fdb502f6dc890b6d42086f2173f717d51c4af796d76113440147116eb7319bc8fd30460ce26bf0",
+                                        "ConfirmPassword": "b94bf37da59d2fcf595c4179a37e82b5a7b4dbb5a58624f5d4fdb502f6dc890b6d42086f2173f717d51c4af796d76113440147116eb7319bc8fd30460ce26bf0"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Update user profile succeed",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/User"
+                                },
+                                "example": {
+                                    "Id": 1,
+                                    "UserName": "ChikyChan",
+                                    "Phone": "+86 12345678901",
+                                    "Email": "chikychan@hotmail.com",
+                                    "ShippingAddresses": [
+                                        "Address 1, GuangZhou city, GuangDong Province, China",
+                                        "Address 2, GuangZhou city, GuangDong Province, China"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "The request is not authenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                },
+                                "example": {
+                                    "Message": "You are not authenticated or your autnentication is expired."
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Unexpected error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Error"
+                                },
+                                "example": {
+                                    "Message": "Unexpected error occurred, please contact IT service desk for support."
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "TicketBookingAuth": [
+                            "Customer"
+                        ]
+                    }
+                ]
+            }
+        },
+        "/users/me/bookings": {
             "get": {
+                "tags": [
+                    "Booking",
+                    "User"
+                ],
                 "responses": {
                     "200": {
                         "description": "Succeed to get the authenticated user's booking list. Empty list may be respond if user has no bookings",
@@ -603,6 +771,10 @@
                 ]
             },
             "put": {
+                "tags": [
+                    "Booking",
+                    "User"
+                ],
                 "description": "User buy ticket and create a booking",
                 "requestBody": {
                     "content": {
@@ -686,8 +858,12 @@
                 ]
             }
         },
-        "/me/bookings/{id}": {
+        "/users/me/bookings/{id}": {
             "get": {
+                "tags": [
+                    "Booking",
+                    "User"
+                ],
                 "parameters": [
                     {
                         "name": "id",
@@ -786,6 +962,10 @@
                 ]
             },
             "patch": {
+                "tags": [
+                    "Booking",
+                    "User"
+                ],
                 "description": "Update a booking",
                 "parameters": [
                     {
@@ -935,8 +1115,13 @@
                 ]
             }
         },
-        "/me/bookings/{id}/pay": {
+        "/users/me/bookings/{id}/pay": {
             "get": {
+                "tags": [
+                    "Booking",
+                    "Payment",
+                    "User"
+                ],
                 "parameters": [
                     {
                         "name": "id",
@@ -1026,6 +1211,9 @@
         },
         "/payment/notify": {
             "get": {
+                "tags": [
+                    "Payment"
+                ],
                 "description": "The endpoint for synchorize notify the payment result from external payment platform. The parameters are dynamic according to different payment platform the request come from, and different payment platform payment notify handler should get their parameters from the query string.",
                 "responses": {
                     "204": {
@@ -1264,6 +1452,51 @@
                         "type": "number",
                         "description": "The total amount the user should pay for the bookings",
                         "readOnly": true
+                    }
+                }
+            },
+            "User": {
+                "type": "object",
+                "required": [
+                    "Id",
+                    "UserName"
+                ],
+                "properties": {
+                    "Id": {
+                        "description": "The identity of the user. Auto generated by system.",
+                        "type": "integer",
+                        "readOnly": true
+                    },
+                    "UserName": {
+                        "description": "The user name of the user. Should be unique",
+                        "type": "string"
+                    },
+                    "Phone": {
+                        "description": "The phone number of the user.",
+                        "type": "string"
+                    },
+                    "Email": {
+                        "description": "The email address of the user.",
+                        "type": "string"
+                    },
+                    "ShippingAddress": {
+                        "description": "A address list of the user",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "OldPassword": {
+                        "description": "The password of the user. Should not respond when get user information",
+                        "type": "string"
+                    },
+                    "Password": {
+                        "description": "The password of the user. Should not respond when get user information",
+                        "type": "string"
+                    },
+                    "ConfirmPassword": {
+                        "description": "The password of the user. Should not respond when get user information",
+                        "type": "string"
                     }
                 }
             },
